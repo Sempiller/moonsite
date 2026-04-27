@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Moon Network - Terms of Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #c82de3;
+            --primary-glow: rgba(200, 45, 227, 0.15);
+            --bg-deep: #080808;
+            --card-bg: rgba(18, 18, 18, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Abstract Grain Texture */
+
+        /* Header Navigation */
+        .nav {
+            position: fixed;
+            top: 0; width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            background: rgba(8, 8, 8, 0.5);
+        }
+
+        .nav-content {
+            width: min(90vw, 1100px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to bottom, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Main Wrapper */
+        .wrapper {
+            max-width: 850px;
+            margin: 140px auto 100px;
+            padding: 0 24px;
+        }
+
+        .tos-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .tos-header h1 {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            margin-bottom: 12px;
+        }
+
+        .last-updated {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Content Sections */
+        .section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: rgba(200, 45, 227, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .section-num {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section h2 i {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .section p {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .section strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Special Boxes */
+        .note {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(200, 45, 227, 0.05);
+            border-radius: 16px;
+            border: 1px solid var(--primary-glow);
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .contact-box {
+            text-align: center;
+            padding: 48px;
+            background: linear-gradient(180deg, rgba(200, 45, 227, 0.1) 0%, transparent 100%);
+            border-radius: 32px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-tg {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-tg:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        @media (max-width: 600px) {
+            .wrapper { margin-top: 100px; }
+            .section { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="wrapper">
+        <header class="tos-header">
+            <span class="last-updated">Updated April 2026</span>
+            <h1>Terms of Service</h1>
+            <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto;">Please review our operating guidelines to ensure a stable experience for all users.</p>
+        </header>
+
+        <section class="section">
+            <span class="section-num">01</span>
+            <h2><i class="fas fa-coins"></i> Refund Policy</h2>
+            <p>Refunds are available only within <strong>one (1) hour</strong> of the original purchase.</p>
+            <p>A refund request must include a <strong>valid reason</strong> (e.g., technical issue, non-delivery of advertised feature).</p>
+            <p>After one hour, all purchases are final. No partial or full refunds will be issued.</p>
+        </section>
+
+        <section class="section">
+            <span class="section-num">02</span>
+            <h2><i class="fas fa-shield-virus"></i> Attack Policy</h2>
+            <p>Users are prohibited from launching attacks against targets explicitly <strong>blacklisted</strong> by Moon Network administrators.</p>
+            <p>Blacklisted targets include, but are not limited to: certain government domains (<strong>.gov</strong>), critical infrastructure, and designated state-owned systems.</p>
+            <p>Violation of this policy will result in immediate account suspension or permanent ban.</p>
+        </section>
+
+        <section class="section">
+            <span class="section-num">03</span>
+            <h2><i class="fas fa-user-slash"></i> Termination Policy</h2>
+            <p>Moon Network administrators may terminate a user’s access <strong>only with a valid reason</strong> (e.g., violation of these ToS, illegal activity, or abuse of the Service).</p>
+            <p>Termination without cause is <strong>not permitted</strong>.</p>
+        </section>
+
+        <section class="section">
+            <span class="section-num">04</span>
+            <h2><i class="fas fa-bolt"></i> API & Rate Limiting</h2>
+            <p>Automated requests intended to bypass concurrent connection or rate limits are strictly prohibited.</p>
+            <p>Deliberate API overloading may result in a <strong>permanent ban</strong> without prior warning.</p>
+        </section>
+
+        <section class="section">
+            <span class="section-num">05</span>
+            <h2><i class="fas fa-lock"></i> Account Sharing</h2>
+            <p>Account sharing is <strong>not allowed</strong>. Any user found sharing login credentials with third parties will face a permanent ban.</p>
+            <p>Each account is intended for a single individual or authorized entity only.</p>
+        </section>
+
+        <section class="section">
+            <span class="section-num">06</span>
+            <h2><i class="fas fa-balance-scale"></i> Fair Usage Policy</h2>
+            <p>Automated flooding and unauthorized attack tools are <strong>permitted</strong> within the technical limits of the Service.</p>
+            <p>However, any activity that degrades service stability for other users may be restricted or blocked.</p>
+        </section>
+
+        <section class="section">
+            <span class="section-num">07</span>
+            <h2><i class="fas fa-redo"></i> Discontinuation & Restoration</h2>
+            <p>If Moon Network permanently ends its service, users may reclaim their accounts when the service is relaunched under <strong>Sempiller</strong>.</p>
+            <p><strong>Proof of original purchase</strong> (e.g., transaction ID, receipt) is required for account restoration.</p>
+            <p>No guarantee of data retention is provided between service closures.</p>
+        </section>
+
+        <section class="section">
+            <span class="section-num">08</span>
+            <h2><i class="fas fa-comments"></i> User Conduct</h2>
+            <p>Criticism of Moon Network owners is permitted as <strong>free speech</strong>.</p>
+            <p>However, insults directed at owners’ personal beliefs, family members, or private life are prohibited.</p>
+            <div class="note">
+                <i class="fas fa-heart" style="color: var(--primary); margin-right: 8px;"></i> 
+                <strong>Note:</strong> Our administrators genuinely value you. Mutual respect ensures a stable environment for everyone.
+            </div>
+        </section>
+
+        <section class="section">
+            <span class="section-num">09</span>
+            <h2><i class="fas fa-edit"></i> Modifications</h2>
+            <p>Moon Network reserves the right to update these Terms at any time. Continued use of the Service after changes constitutes acceptance of the revised terms.</p>
+        </section>
+
+        <section class="contact-box">
+            <h2>Contact & Inquiries</h2>
+            <p>For refunds, appeals, or questions regarding these terms, contact administration via official channels only.</p>
+            <a href="https://t.me/moonc2netz" class="btn-tg">
+                <i class="fab fa-telegram-plane"></i> CONTACT SUPPORT
+            </a>
+        </section>
+
+        <footer style="text-align: center; margin-top: 80px; opacity: 0.5; font-size: 0.8rem;">
+            &copy; 2026 Moon Network. All rights reserved.
+        </footer>
+    </main>
+
+</body>
+</html>

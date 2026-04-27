@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="refresh" content="1; url=https://t.me/moonc2netz" />
+  <title>Redirecting to Telegram...</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    @keyframes progress {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .fade-in { animation: fadeIn 0.8s ease-out; }
+    .pulse { animation: pulse 2s infinite; }
+    .progress-bar { animation: progress 1s linear; }
+    .float { animation: float 3s ease-in-out infinite; }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .glass-effect {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 min-h-screen flex items-center justify-center p-4 overflow-hidden">
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 float"></div>
+    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 float" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 float" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-md">
+    <div class="text-center mb-8 fade-in">
+      <h1 class="text-3xl font-bold gradient-text">SempCloud</h1>
+    </div>
+
+    <div class="glass-effect rounded-3xl p-8 shadow-2xl text-center text-white fade-in" style="animation-delay: 0.2s;">
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Redirecting to Telegram</h2>
+        <p class="text-blue-200 text-sm">Taking you to our community channel...</p>
+      </div>
+
+      <div class="w-full bg-blue-800 rounded-full h-2 mb-6 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-400 to-blue-500 h-2 rounded-full progress-bar"></div>
+      </div>
+
+      <div class="mb-6">
+        <a href="https://t.me/moonc2netz" 
+           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          </svg>
+          Join Telegram Channel
+        </a>
+      </div>
+
+      <p class="text-blue-300 text-xs mb-4">
+        If you're not redirected automatically, click the button above
+      </p>
+
+      <div class="text-blue-400 text-xs pulse">
+        <span id="countdown">Redirecting in 1 second...</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-6 fade-in" style="animation-delay: 0.4s;">
+      <p class="text-blue-300 text-sm">
+        Powered by 
+        <a href="https://semp.cloud" target="_blank" class="text-blue-200 hover:text-blue-100 transition-colors duration-300 font-medium">
+          SempCloud
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    let seconds = 1;
+    const countdownElement = document.getElementById('countdown');
+    
+    const updateCountdown = () => {
+      if (seconds > 0) {
+        countdownElement.textContent = `Redirecting in ${seconds} second${seconds !== 1 ? 's' : ''}...`;
+        seconds--;
+        setTimeout(updateCountdown, 1000);
+      } else {
+        countdownElement.textContent = 'Redirecting now...';
+      }
+    };
+    
+    updateCountdown();
+  </script>
+</body>
+</html>

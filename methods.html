@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moon Networking - Methods</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary-gradient: linear-gradient(135deg, #5d2667 0%, #5d2667 100%);
+            --secondary-gradient: linear-gradient(135deg, #5d2667 0%, #5d2667 100%);
+            --accent-gradient: linear-gradient(135deg, #5d2667 0%, #5d2667 100%);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-accent: #0066ff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .modern-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, #5d2667 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, #5d2667 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, #5d2667 0%, transparent 50%);
+        }
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50px;
+            padding: 16px 32px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 
+                0 8px 32px 0 rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            width: min(90vw, 1728px);
+            max-width: 1728px;
+        }
+        .header.scrolled {
+            top: 15px;
+            padding: 10px 20px;
+            width: min(50vw, 960px); 
+            max-width: 960px;
+            transform: translateX(-50%) scale(0.9);
+        }
+        .header.scrolled .logo-text {
+            font-size: 1.4rem;
+        }
+        .header.scrolled .nav-link {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+        .header.scrolled .contact-btn {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            width: 100%;
+        }
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a328b9 0%, #a328b9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            transition: font-size 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex: 1;
+            justify-content: center;
+        }
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 20px;
+            border-radius: 25px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .contact-btn {
+            background: linear-gradient(135deg, #a328b9 0%, #a328b9 100%);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(162, 40, 185, 0.4);
+        }
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .contact-btn:hover::before {
+            left: 100%;
+        }
+        .mobile-menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+        .mobile-menu-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+        .mobile-menu-toggle:hover, .mobile-menu-toggle:active {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow-y: auto;
+        }
+        .mobile-menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, #a328b9 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, #a328b9 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .mobile-menu-close {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+        .mobile-menu-close::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+        .mobile-menu-close:hover, .mobile-menu-close:active {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px) rotate(90deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            flex: 1;
+        }
+        .mobile-nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 1.25rem 1.5rem;
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            text-align: left;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            transform: translateX(-20px);
+            opacity: 0;
+            animation: slideInMobile 0.5s ease forwards;
+        }
+        .mobile-nav-link:nth-child(1) { animation-delay: 0.1s; }
+        .mobile-nav-link:nth-child(2) { animation-delay: 0.15s; }
+        .mobile-nav-link:nth-child(3) { animation-delay: 0.2s; }
+        .mobile-nav-link:nth-child(4) { animation-delay: 0.25s; }
+        @keyframes slideInMobile {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .mobile-nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #a328b9, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-nav-link:hover::before, .mobile-nav-link.active::before {
+            opacity: 1;
+        }
+        .mobile-nav-link:hover, .mobile-nav-link.active {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #a328b9;
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        .mobile-nav-link.active {
+            background: linear-gradient(135deg, #a328b9 0%, #a328b9 100%);
+            border-color: #a328b9;
+            color: white;
+        }
+        .mobile-contact-btn {
+            background: linear-gradient(135deg, #a328b9 0%, #a328b9 100%);
+            color: white;
+            padding: 1.25rem 2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 10px 30px rgba(162, 40, 185, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            border: 1px solid #a328b9;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpMobile 0.5s ease forwards 0.3s;
+        }
+        @keyframes slideUpMobile {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .mobile-contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .mobile-contact-btn:hover::before, .mobile-contact-btn:active::before {
+            left: 100%;
+        }
+        .mobile-contact-btn:hover, .mobile-contact-btn:active {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(162, 40, 185, 0.4);
+        }
+        .mobile-menu-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        .mobile-menu-footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        .main-content {
+            position: relative;
+            z-index: 10;
+            padding-top: 120px;
+        }
+        .hero-section {
+            padding: 4rem 1.5rem;
+            text-align: center;
+        }
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #c82de3 0%, #c82de3 50%, #c82de3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .methods-section {
+            padding: 4rem 1.5rem;
+        }
+        .methods-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .access-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #a328b9 0%, #a328b9 100%);
+            color: white;
+            border-color: #a328b9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(162, 40, 185, 0.3);
+        }
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        .method-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 1;
+        }
+        .method-card:hover {
+            transform: translateY(-8px);
+            border-color: #a328b9;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .method-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #a328b9, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .method-card:hover::before {
+            opacity: 1;
+        }
+        .method-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        .method-number {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a328b9 0%, #c82de3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.7;
+        }
+        .access-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .access-all {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .access-vip {
+            background: rgba(162, 40, 185, 0.1);
+            color: #a328b9;
+            border: 1px solid rgba(162, 40, 185, 0.3);
+        }
+        .method-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .method-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .method-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .feature-tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .method-card:hover .feature-tag {
+            background: rgba(162, 40, 185, 0.1);
+            border-color: rgba(162, 40, 185, 0.3);
+            color: #a328b9;
+        }
+        .cta-section {
+            padding: 6rem 1.5rem;
+        }
+        .cta-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .cta-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #a328b9, transparent);
+        }
+        .cta-title {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #c824e6 0%, #c824e6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cta-description {
+            font-size: clamp(1.1rem, 3vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .primary-btn {
+            background: linear-gradient(135deg, #a328b9 0%, #a328b9 100%);
+            border: none;
+            border-radius: 16px;
+            padding: 1.25rem 3rem;
+            color: white;
+            font-weight: 700;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(162, 40, 185, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-height: 56px;
+        }
+        .primary-btn i {
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+        }
+        .primary-btn:hover i, .primary-btn:active i {
+            transform: translateY(-2px);
+        }
+        .primary-btn:hover, .primary-btn:active {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(162, 40, 185, 0.4);
+        }
+        .primary-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .primary-btn:hover::before, .primary-btn:active::before {
+            left: 100%;
+        }
+        .secondary-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.25rem 3rem;
+            color: white;
+            font-weight: 600;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-height: 56px;
+        }
+        .secondary-btn i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+        .secondary-btn:hover i, .secondary-btn:active i {
+            transform: translateX(3px);
+        }
+        .secondary-btn:hover, .secondary-btn:active {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .scroll-reveal-delay-1 { transition-delay: 0.1s; }
+        .scroll-reveal-delay-2 { transition-delay: 0.2s; }
+        .scroll-reveal-delay-3 { transition-delay: 0.3s; }
+        .scroll-reveal-delay-4 { transition-delay: 0.4s; }
+        .scroll-reveal-delay-5 { transition-delay: 0.5s; }
+        .scroll-reveal-delay-6 { transition-delay: 0.6s; }
+        @media (max-width: 1200px) {
+            .header {
+                width: min(85vw, 1020px);
+            }
+            .header.scrolled {
+                width: min(45vw, 540px);
+            }
+        }
+        @media (max-width: 768px) {
+            .header {
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                border-radius: 20px;
+                width: calc(100% - 20px);
+                max-width: none;
+                padding: 12px 16px;
+            }
+            .header.scrolled {
+                width: calc(100% - 20px);
+                max-width: none;
+                transform: none;
+                padding: 10px 14px;
+            }
+            .header-content {
+                gap: 1rem;
+            }
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            .header.scrolled .logo-text {
+                font-size: 1.3rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-toggle {
+                display: block;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            .contact-btn {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+            .header.scrolled .contact-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            .main-content {
+                padding-top: 80px;
+            }
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+            .methods-section {
+                padding: 2rem 1rem;
+            }
+            .methods-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .method-card {
+                padding: 1.5rem;
+            }
+            .access-filter {
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+            .filter-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.8rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .cta-buttons .primary-btn,
+            .cta-buttons .secondary-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-section,
+            .methods-section,
+            .cta-section {
+                padding: 2rem 0.75rem;
+            }
+            .method-card {
+                padding: 1.25rem;
+            }
+            .method-name {
+                font-size: 1.3rem;
+            }
+            .method-description {
+                font-size: 0.9rem;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #a328b9 0%, #c82de3 100%);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #c82de3 0%, #a328b9 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="modern-bg"></div>
+    <header class="header"> 
+        <div class="header-content">
+            <div class="logo-text">Moon</div>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Network</a>
+                <a href="methods.html" class="nav-link active">Methods</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="telegram.html" class="nav-link">Telegram</a>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="https://t.me/moonc2netz" target="_blank" class="contact-btn">Get Moon</a>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <div class="logo-text">Moon</div>
+                <button class="mobile-menu-close" id="mobileMenuClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-links">
+                <a href="index.html" class="mobile-nav-link">Network</a>
+                <a href="methods.html" class="mobile-nav-link active">Methods</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+                <a href="pricing.html" class="mobile-nav-link">Pricing</a>
+                <a href="telegram.html" class="mobile-nav-link">Telegram</a>
+            </nav>
+            <a href="https://t.me/moonc2netz" target="_blank" class="mobile-contact-btn">
+                Get Moon
+            </a>
+            <div class="mobile-menu-footer">
+                <p class="mobile-menu-footer-text">© 2025 Moon Development Team</p>
+            </div>
+        </div>
+    </div>
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="hero-container">
+                <h1 class="hero-title scroll-reveal">Network Methods</h1>
+                <p class="hero-subtitle scroll-reveal scroll-reveal-delay-1">
+                    Discover our powerful arsenal of network methods designed for maximum performance and efficiency.
+                </p>
+            </div>
+        </section>
+        <section class="methods-section">
+            <div class="methods-container">
+                <div class="access-filter scroll-reveal scroll-reveal-delay-2">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-list"></i>
+                        All Methods
+                    </button>
+                    <button class="filter-btn" data-filter="All">
+                        <i class="fas fa-users"></i>
+                        All Access
+                    </button>
+                    <button class="filter-btn" data-filter="Vip">
+                        <i class="fas fa-crown"></i>
+                        VIP Access
+                    </button>
+                </div>
+                <div class="methods-grid" id="methodsGrid">
+                    <!-- All Access Methods (1-7) -->
+                    <div class="method-card scroll-reveal" data-access="All"><div class="method-header"><div class="method-number">01</div><div class="access-badge access-all">All</div></div><h3 class="method-name">tcp</h3><p class="method-description">Overloads server with Mass TCP connections.</p><div class="method-features"><span class="feature-tag">Mass Connections</span><span class="feature-tag">High PPS</span><span class="feature-tag">Stable</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-1" data-access="All"><div class="method-header"><div class="method-number">02</div><div class="access-badge access-all">All</div></div><h3 class="method-name">udp</h3><p class="method-description">Overwhelms target with excessive UDP packets.</p><div class="method-features"><span class="feature-tag">UDP Flood</span><span class="feature-tag">High Volume</span><span class="feature-tag">Fast</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-2" data-access="All"><div class="method-header"><div class="method-number">03</div><div class="access-badge access-all">All</div></div><h3 class="method-name">ovh</h3><p class="method-description">PSH-ACK Flood designed to bypass OVH.</p><div class="method-features"><span class="feature-tag">OVH Bypass</span><span class="feature-tag">PSH-ACK</span><span class="feature-tag">Specialized</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-3" data-access="All"><div class="method-header"><div class="method-number">04</div><div class="access-badge access-all">All</div></div><h3 class="method-name">dns</h3><p class="method-description">DNS Amplification attack.</p><div class="method-features"><span class="feature-tag">Amplification</span><span class="feature-tag">DNS</span><span class="feature-tag">Reflection</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-4" data-access="All"><div class="method-header"><div class="method-number">05</div><div class="access-badge access-all">All</div></div><h3 class="method-name">game</h3><p class="method-description">UDP Flood optimized for games.</p><div class="method-features"><span class="feature-tag">Game Optimized</span><span class="feature-tag">UDP</span><span class="feature-tag">Gaming</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-5" data-access="All"><div class="method-header"><div class="method-number">06</div><div class="access-badge access-all">All</div></div><h3 class="method-name">http</h3><p class="method-description">Overloads web server with excessive requests.</p><div class="method-features"><span class="feature-tag">Web Server</span><span class="feature-tag">HTTP Requests</span><span class="feature-tag">Layer 7</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-6" data-access="All"><div class="method-header"><div class="method-number">07</div><div class="access-badge access-all">All</div></div><h3 class="method-name">tls</h3><p class="method-description">Transport Layer Security v1.3 flood.</p><div class="method-features"><span class="feature-tag">TLS 1.3</span><span class="feature-tag">SSL Flood</span><span class="feature-tag">Encrypted</span></div></div>
+                    
+                    <!-- VIP Methods (8-30) as per terminal log -->
+                    <div class="method-card scroll-reveal" data-access="Vip"><div class="method-header"><div class="method-number">08</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">rainbow</h3><p class="method-description">SSDP & UDP Flood Optimized for R6 Games.</p><div class="method-features"><span class="feature-tag">Game Optimized</span><span class="feature-tag">R6 Siege</span><span class="feature-tag">SSDP</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-1" data-access="Vip"><div class="method-header"><div class="method-number">09</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">fivem</h3><p class="method-description">FiveM Server Flood Optimized For Best Result.</p><div class="method-features"><span class="feature-tag">FiveM</span><span class="feature-tag">Game Server</span><span class="feature-tag">Optimized</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-2" data-access="Vip"><div class="method-header"><div class="method-number">10</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">warthunder</h3><p class="method-description">Strong UDP Flood for War Thunder.</p><div class="method-features"><span class="feature-tag">UDP Flood</span><span class="feature-tag">War Thunder</span><span class="feature-tag">High Power</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-3" data-access="Vip"><div class="method-header"><div class="method-number">11</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">fortnite</h3><p class="method-description">Fortnite Game Server Flood.</p><div class="method-features"><span class="feature-tag">Fortnite</span><span class="feature-tag">UDP Flood</span><span class="feature-tag">SSDP</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-4" data-access="Vip"><div class="method-header"><div class="method-number">12</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">rocket</h3><p class="method-description">SSDP Flood Optimized for Rocket League.</p><div class="method-features"><span class="feature-tag">Rocket League</span><span class="feature-tag">SSDP</span><span class="feature-tag">Optimized</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-5" data-access="Vip"><div class="method-header"><div class="method-number">13</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">subnet</h3><p class="method-description">Flood that targets all /24 Subnet.</p><div class="method-features"><span class="feature-tag">Subnet</span><span class="feature-tag">/24 Range</span><span class="feature-tag">Wide Target</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-6" data-access="Vip"><div class="method-header"><div class="method-number">14</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">rudp</h3><p class="method-description">Raw UDP Flood with high power.</p><div class="method-features"><span class="feature-tag">Raw Power</span><span class="feature-tag">High GBPS</span><span class="feature-tag">UDP</span></div></div>
+                    <div class="method-card scroll-reveal" data-access="Vip"><div class="method-header"><div class="method-number">15</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">gudp</h3><p class="method-description">GUDP Flood with high GBPS Performance.</p><div class="method-features"><span class="feature-tag">GUDP</span><span class="feature-tag">Ultra GBPS</span><span class="feature-tag">Performance</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-1" data-access="Vip"><div class="method-header"><div class="method-number">16</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">close</h3><p class="method-description">Slowloris type tcp socket flood for closing ports.</p><div class="method-features"><span class="feature-tag">Port Closing</span><span class="feature-tag">TCP Socket</span><span class="feature-tag">Slowloris</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-2" data-access="Vip"><div class="method-header"><div class="method-number">17</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">rovh</h3><p class="method-description">Flood designed to bypass ovh.</p><div class="method-features"><span class="feature-tag">OVH Bypass</span><span class="feature-tag">Raw Power</span><span class="feature-tag">Advanced</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-3" data-access="Vip"><div class="method-header"><div class="method-number">18</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">rtcp</h3><p class="method-description">Overwhelms Servers with High UDP gbps flood.</p><div class="method-features"><span class="feature-tag">High PPS</span><span class="feature-tag">Server Overload</span><span class="feature-tag">Raw</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-4" data-access="Vip"><div class="method-header"><div class="method-number">19</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">socket</h3><p class="method-description">TCP Socket flood with high pps.</p><div class="method-features"><span class="feature-tag">TCP Socket</span><span class="feature-tag">High PPS</span><span class="feature-tag">Raw</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-5" data-access="Vip"><div class="method-header"><div class="method-number">20</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">icmp</h3><p class="method-description">Raw ICMP Layer3 Flood with high pps.</p><div class="method-features"><span class="feature-tag">Layer 3</span><span class="feature-tag">ICMP</span><span class="feature-tag">High PPS</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-6" data-access="Vip"><div class="method-header"><div class="method-number">21</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">rgame</h3><p class="method-description">RAW UDP Flood Customized for Game Servers.</p><div class="method-features"><span class="feature-tag">Game Servers</span><span class="feature-tag">Raw UDP</span><span class="feature-tag">Customized</span></div></div>
+                    <div class="method-card scroll-reveal" data-access="Vip"><div class="method-header"><div class="method-number">22</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">xmas</h3><p class="method-description">Xmas packet flood with raw bots.</p><div class="method-features"><span class="feature-tag">Xmas Packets</span><span class="feature-tag">Raw Bots</span><span class="feature-tag">Special</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-1" data-access="Vip"><div class="method-header"><div class="method-number">23</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">mix</h3><p class="method-description">TCP and UDP Mixed flood big pps and gbps.</p><div class="method-features"><span class="feature-tag">Mixed Protocol</span><span class="feature-tag">Big PPS</span><span class="feature-tag">High GBPS</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-2" data-access="Vip"><div class="method-header"><div class="method-number">24</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">discord</h3><p class="method-description">Flood designed for discord calls.</p><div class="method-features"><span class="feature-tag">Discord</span><span class="feature-tag">Voice Calls</span><span class="feature-tag">Specialized</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-3" data-access="Vip"><div class="method-header"><div class="method-number">25</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">ssdp</h3><p class="method-description">Simple Service Discovery Protocol Flood.</p><div class="method-features"><span class="feature-tag">SSDP</span><span class="feature-tag">Amplification</span><span class="feature-tag">Discovery</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-4" data-access="Vip"><div class="method-header"><div class="method-number">26</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">https</h3><p class="method-description">Recent HTTPS Protocol Attack.</p><div class="method-features"><span class="feature-tag">HTTPS</span><span class="feature-tag">Recent Protocol</span><span class="feature-tag">Advanced</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-5" data-access="Vip"><div class="method-header"><div class="method-number">27</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">browser</h3><p class="method-description">HTTP/2 Flood Optimized to bypass CloudFlare.</p><div class="method-features"><span class="feature-tag">HTTP/2</span><span class="feature-tag">CloudFlare Bypass</span><span class="feature-tag">Browser</span></div></div>
+                    <div class="method-card scroll-reveal scroll-reveal-delay-6" data-access="Vip"><div class="method-header"><div class="method-number">28</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">eagle</h3><p class="method-description">EagleWare Type Flood to Bypass Protections.</p><div class="method-features"><span class="feature-tag">EagleWare</span><span class="feature-tag">Bypass</span><span class="feature-tag">Advanced</span></div></div>
+                    <div class="method-card scroll-reveal" data-access="Vip"><div class="method-header"><div class="method-number">29</div><div class="access-badge access-vip">VIP</div></div><h3 class="method-name">tlsx</h3><p class="method-description">TLSX/1.3 Flood to kill every target.</p><div class="method-features"><span class="feature-tag">TLSX 1.3</span><span class="feature-tag">Ultimate Power</span><span class="feature-tag">High RPS</span></div></div>
+                </div>
+            </div>
+        </section>
+        <section class="cta-section">
+            <div class="cta-container">
+                <div class="cta-card scroll-reveal">
+                    <h2 class="cta-title">Ready to Get Started?</h2>
+                    <p class="cta-description">
+                        Join Moon Network today and experience the power of our advanced methods with unmatched performance and reliability.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="https://t.me/moonc2netz" target="_blank" class="primary-btn">
+                            <i class="fab fa-telegram"></i>
+                            Get Moon Now
+                        </a>
+                        <a href="index.html" class="secondary-btn">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const methodCards = document.querySelectorAll('.method-card');
+            function toggleMobileMenu() {
+                mobileMenu.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+            }
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', closeMobileMenu);
+            }
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            mobileMenu.addEventListener('click', function(e) {
+                if (e.target === mobileMenu) {
+                    closeMobileMenu();
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+            // Filter functionality
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const filterValue = btn.getAttribute('data-filter');
+                    methodCards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-access') === filterValue) {
+                            card.style.display = 'block';
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                            }, 100);
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+            const isMobile = window.innerWidth <= 768;
+            const scrollRevealOptions = {
+                threshold: isMobile ? 0.1 : 0.15,
+                rootMargin: isMobile ? '0px 0px -50px 0px' : '0px 0px -100px 0px'
+            };
+            const scrollRevealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        scrollRevealObserver.unobserve(entry.target);
+                    }
+                });
+            }, scrollRevealOptions);
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                scrollRevealObserver.observe(el);
+            });
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const header = document.querySelector('.header');
+                if (scrollTop > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                lastScrollTop = scrollTop;
+            });
+            if (isMobile) {
+                document.querySelectorAll('.method-card').forEach(card => {
+                    card.addEventListener('touchstart', function() {
+                        this.style.transform = 'translateY(-4px) scale(1.01)';
+                    });
+                    card.addEventListener('touchend', function() {
+                        setTimeout(() => {
+                            this.style.transform = 'translateY(0) scale(1)';
+                        }, 150);
+                    });
+                });
+            }
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            window.addEventListener('orientationchange', function() {
+                setTimeout(() => {
+                    window.scrollTo(0, window.scrollY);
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
